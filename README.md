@@ -1,0 +1,1 @@
+# kafka-anti-poison-pill-pattern
