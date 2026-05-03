@@ -1,0 +1,21 @@
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      acks: all                  # wait for all replicas to confirm
+      retries: 3
+      properties:
+        enable.idempotence: true          # exactly-once producer semantics
+        max.in.flight.requests.per.connection: 5
+    consumer:
+      group-id: my-app-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      enable-auto-commit: false           # ALWAYS false — control commits yourself
+      properties:
+        spring.json.trusted.packages: "com.example.dto"
+    listener:
+      ack-mode: MANUAL_IMMEDIATE          # commit only after successful processing
